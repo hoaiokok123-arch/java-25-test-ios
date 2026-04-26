@@ -204,7 +204,7 @@ index bc7f580f..e3af5c82 100644
    GENSRC_OSX_ICONS_DST := $(SUPPORT_OUTPUTDIR)/headers/java.desktop
    GENSRC_OSX_ICONS := $(GENSRC_OSX_ICONS_DST)/AWTIconData.h
 diff --git a/make/modules/java.desktop/lib/AwtLibraries.gmk b/make/modules/java.desktop/lib/AwtLibraries.gmk
-index 463e09e1..720b220f 100644
+index 463e09e1..fa4944b5 100644
 --- a/make/modules/java.desktop/lib/AwtLibraries.gmk
 +++ b/make/modules/java.desktop/lib/AwtLibraries.gmk
 @@ -65,7 +65,7 @@ ifeq ($(call isTargetOs, linux macosx aix), true)
@@ -276,6 +276,21 @@ index 463e09e1..720b220f 100644
    ##############################################################################
    ## Build libawt_lwawt
    ##############################################################################
+@@ -404,11 +409,11 @@ else
+ endif
+ 
+ ifeq ($(call isTargetOs, macosx), true)
+-  # libjawt on macosx does not use the unix code
+-  LIBJAWT_EXCLUDE_SRC_PATTERNS := /unix/
++  # libjawt on iOS does not use the macosx code
++  LIBJAWT_EXCLUDE_SRC_PATTERNS := /macosx/
+ endif
+ 
+-ifeq ($(call isTargetOs, linux)+$(ENABLE_HEADLESS_ONLY), true+true)
++ifeq ($(call isTargetOs, linux macosx)+$(ENABLE_HEADLESS_ONLY), true+true)
+   LIBJAWT_CFLAGS += -DHEADLESS
+ endif
+ 
 @@ -416,7 +421,7 @@ ifeq ($(call isTargetOs, windows)+$(call isTargetCpu, x86), true+true)
    LIBJAWT_LIBS_windows := kernel32.lib
  endif
