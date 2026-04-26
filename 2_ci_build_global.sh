@@ -23,10 +23,10 @@ fi
 
 # Only build the sources if they are not already present
 if [ ! -d "cups-2.2.4" ]; then
-  ./3_getlibs.sh
-  ./4_buildlibs.sh
+  bash ./3_getlibs.sh
+  bash ./4_buildlibs.sh
 fi
-./5_clonejdk.sh
-./6_buildjdk.sh
-./7_removejdkdebuginfo.sh
-./8_tarjdk.sh
+bash ./5_clonejdk.sh
+bash ./6_buildjdk.sh
+bash ./7_removejdkdebuginfo.sh
+bash ./8_tarjdk.sh

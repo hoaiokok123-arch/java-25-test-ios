@@ -1,0 +1,9 @@
+*.sh text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.diff text eol=lf
+android-wrapped-clang text eol=lf
+android-wrapped-clang++ text eol=lf
+ios-arm64-clang text eol=lf
+ios-arm64-clang++ text eol=lf
+macos-host-cc text eol=lf
