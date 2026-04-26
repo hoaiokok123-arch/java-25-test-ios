@@ -3,6 +3,9 @@ set -euo pipefail
 
 . setdevkitpath.sh
 
+AUTOCONF_EXTRA_ARGS="${AUTOCONF_EXTRA_ARGS:-}"
+devkit_arg=""
+
 export FREETYPE_DIR="$PWD/freetype-$BUILD_FREETYPE_VERSION/build_android-$TARGET_SHORT"
 export CUPS_DIR="$PWD/cups-2.2.4"
 export CFLAGS+=" -DLE_STANDALONE"
@@ -27,6 +30,7 @@ OBJCOPY=${OBJCOPY} \
 RANLIB=${RANLIB} \
 AR=${AR} \
 STRIP=${STRIP}"
+  devkit_arg="--with-devkit=$TOOLCHAIN"
 
   if [[ "${TARGET_VERSION}" -eq 21 ]]; then
     platform_args="--build=x86_64-unknown-linux-gnu ${platform_args}"
@@ -105,7 +109,7 @@ if ! bash ./configure \
   --with-jvm-variants="$JVM_VARIANTS" \
   --with-jvm-features=-dtrace,-zero,-vm-structs,-epsilongc \
   --with-cups-include="$CUPS_DIR" \
-  --with-devkit="$TOOLCHAIN" \
+  $devkit_arg \
   --with-native-debug-symbols=external \
   --with-debug-level="$JDK_DEBUG_LEVEL" \
   --with-fontconfig-include="$ANDROID_INCLUDE" \
