@@ -324,19 +324,20 @@ index 463e09e1..fa4944b5 100644
  ))
  
 diff --git a/make/modules/java.desktop/lib/ClientLibraries.gmk b/make/modules/java.desktop/lib/ClientLibraries.gmk
-index 6a115a81..0b47ecfb 100644
+index 6a115a81..f9788b54 100644
 --- a/make/modules/java.desktop/lib/ClientLibraries.gmk
 +++ b/make/modules/java.desktop/lib/ClientLibraries.gmk
-@@ -137,7 +137,7 @@ TARGETS += $(BUILD_LIBJAVAJPEG)
+@@ -137,7 +137,8 @@ TARGETS += $(BUILD_LIBJAVAJPEG)
  ## Build libsplashscreen
  ################################################################################
  
 -ifeq ($(ENABLE_HEADLESS_ONLY), false)
-+ifneq ($(ENABLE_HEADLESS_ONLY)+$(call isTargetOs, macosx)+$(call isTargetOs, macosx_NOTIOS), false+true+false)
++# iOS uses the macosx os type but does not support the desktop splashscreen implementation.
++ifneq ($(call isTargetOs, macosx)+$(call isTargetOs, macosx_NOTIOS), true+false)
    LIBSPLASHSCREEN_EXTRA_SRC := \
        common/awt/systemscale \
        #
-@@ -196,7 +196,7 @@ ifeq ($(ENABLE_HEADLESS_ONLY), false)
+@@ -196,7 +197,7 @@ ifeq ($(ENABLE_HEADLESS_ONLY), false)
      LIBSPLASHSCREEN_CFLAGS += -DPNG_POWERPC_VSX_OPT=0
    endif
  
@@ -345,7 +346,7 @@ index 6a115a81..0b47ecfb 100644
      # libsplashscreen on macosx does not use the unix code
      LIBSPLASHSCREEN_EXCLUDE_SRC_PATTERNS := /unix/
  
-@@ -209,7 +209,7 @@ ifeq ($(ENABLE_HEADLESS_ONLY), false)
+@@ -209,7 +210,7 @@ ifeq ($(ENABLE_HEADLESS_ONLY), false)
      BUILD_LIBSPLASHSCREEN_splashscreen_sys.m_CFLAGS := -O0
    endif
  
@@ -354,7 +355,7 @@ index 6a115a81..0b47ecfb 100644
      LIBSPLASHSCREEN_CFLAGS += -DWITH_MACOSX
    else ifeq ($(call isTargetOs, windows), true)
      LIBSPLASHSCREEN_CFLAGS += -DWITH_WIN32
-@@ -219,6 +219,17 @@ ifeq ($(ENABLE_HEADLESS_ONLY), false)
+@@ -219,6 +220,17 @@ ifeq ($(ENABLE_HEADLESS_ONLY), false)
  
    LIBSPLASHSCREEN_STATIC_LIB_EXCLUDE_OBJS += systemScale.o
  
@@ -372,7 +373,7 @@ index 6a115a81..0b47ecfb 100644
    $(eval $(call SetupJdkLibrary, BUILD_LIBSPLASHSCREEN, \
        NAME := splashscreen, \
        EXTRA_SRC := $(LIBSPLASHSCREEN_EXTRA_SRC), \
-@@ -261,16 +272,11 @@ ifeq ($(ENABLE_HEADLESS_ONLY), false)
+@@ -261,16 +273,11 @@ ifeq ($(ENABLE_HEADLESS_ONLY), false)
        LDFLAGS := $(ICONV_LDFLAGS), \
        LDFLAGS_windows := -delayload:user32.dll, \
        JDK_LIBS_windows := java.base:libjava, \
@@ -391,7 +392,7 @@ index 6a115a81..0b47ecfb 100644
        LIBS_aix := $(LIBDL) $(X_LIBS) -lX11 -lXext, \
        LIBS_windows := delayimp.lib gdi32.lib kernel32.lib user32.lib, \
        STATIC_LIB_EXCLUDE_OBJS := $(LIBSPLASHSCREEN_STATIC_LIB_EXCLUDE_OBJS), \
-@@ -377,13 +383,19 @@ endif
+@@ -377,13 +384,19 @@ endif
  
  ifeq ($(call isTargetOs, windows), true)
    LIBFONTMANAGER_EXCLUDE_FILES += X11FontScaler.c X11TextRenderer.c
@@ -412,7 +413,7 @@ index 6a115a81..0b47ecfb 100644
  LIBFONTMANAGER_CFLAGS += $(X_CFLAGS) -DLE_STANDALONE -DHEADLESS
  
  # LDFLAGS clarification:
-@@ -409,7 +421,7 @@ $(eval $(call SetupJdkLibrary, BUILD_LIBFONTMANAGER, \
+@@ -409,7 +422,7 @@ $(eval $(call SetupJdkLibrary, BUILD_LIBFONTMANAGER, \
      LDFLAGS_FILTER_OUT := -Wl$(COMMA)-z$(COMMA)defs, \
      LDFLAGS_aix := -Wl$(COMMA)-berok, \
      JDK_LIBS := libawt java.base:libjava $(LIBFONTMANAGER_JDK_LIBS), \
@@ -421,7 +422,7 @@ index 6a115a81..0b47ecfb 100644
      JDK_LIBS_unix := java.base:libjvm, \
      LIBS := $(LIBFONTMANAGER_LIBS), \
      LIBS_unix := $(LIBM), \
-@@ -422,7 +434,7 @@ $(eval $(call SetupJdkLibrary, BUILD_LIBFONTMANAGER, \
+@@ -422,7 +435,7 @@ $(eval $(call SetupJdkLibrary, BUILD_LIBFONTMANAGER, \
  
  TARGETS += $(BUILD_LIBFONTMANAGER)
  
