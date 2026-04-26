@@ -514,6 +514,40 @@ index 861fda7a..4d66ad24 100644
  #include <sys/mman.h>
  #include <sys/types.h>
  
+diff --git a/src/hotspot/os/bsd/memMapPrinter_macosx.cpp b/src/hotspot/os/bsd/memMapPrinter_macosx.cpp
+index 154d2887..5d0ee464 100644
+--- a/src/hotspot/os/bsd/memMapPrinter_macosx.cpp
++++ b/src/hotspot/os/bsd/memMapPrinter_macosx.cpp
+@@ -26,10 +26,21 @@
+ #if defined(__APPLE__)
+ 
+ #include "nmt/memMapPrinter.hpp"
++#include "utilities/ostream.hpp"
++
++#include <TargetConditionals.h>
++
++#if TARGET_OS_IPHONE
++
++void MemMapPrinter::pd_print_all_mappings(const MappingPrintSession& session) {
++  session.out()->print_cr("Memory mapping dump is not supported on iOS.");
++}
++
++#else
++
+ #include "runtime/os.hpp"
+ #include "utilities/align.hpp"
+ #include "utilities/globalDefinitions.hpp"
+-#include "utilities/ostream.hpp"
+ #include "utilities/powerOfTwo.hpp"
+ 
+ #include <limits.h>
+@@ -379,4 +390,6 @@ void MemMapPrinter::pd_print_all_mappings(const MappingPrintSession& session) {
+   summary.print_on(session);
+   st->cr();
+ }
++
++#endif // TARGET_OS_IPHONE
+ #endif // __APPLE__
 diff --git a/src/hotspot/os/bsd/os_bsd.cpp b/src/hotspot/os/bsd/os_bsd.cpp
 index 868725fd..57984e2c 100644
 --- a/src/hotspot/os/bsd/os_bsd.cpp
