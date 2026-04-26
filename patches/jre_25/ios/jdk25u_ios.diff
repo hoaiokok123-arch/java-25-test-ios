@@ -3154,10 +3154,10 @@ index 00000000..122df59e
 +
 +#endif	/* _SCSCHEMADEFINITIONS_H */
 diff --git a/src/java.base/macosx/native/libjava/java_props_macosx.c b/src/java.base/macosx/native/libjava/java_props_macosx.c
-index 6656bf04..24404507 100644
+index 6656bf04..319d4e1c 100644
 --- a/src/java.base/macosx/native/libjava/java_props_macosx.c
 +++ b/src/java.base/macosx/native/libjava/java_props_macosx.c
-@@ -29,8 +29,15 @@
+@@ -29,9 +29,24 @@
  #include <arpa/inet.h>
  #include <objc/objc-runtime.h>
  
@@ -3170,9 +3170,18 @@ index 6656bf04..24404507 100644
 +#else
  #include <SystemConfiguration/SystemConfiguration.h>
 +#endif
++#if TARGET_OS_IPHONE
++#import <Foundation/NSAutoreleasePool.h>
++#import <Foundation/NSDictionary.h>
++#import <Foundation/NSPathUtilities.h>
++#import <Foundation/NSProcessInfo.h>
++#import <Foundation/NSString.h>
++#else
  #include <Foundation/Foundation.h>
++#endif
  
  #include "java_props_macosx.h"
+ 
 diff --git a/src/java.base/macosx/native/libnet/DefaultProxySelector.c b/src/java.base/macosx/native/libnet/DefaultProxySelector.c
 index a176699b..565b9de4 100644
 --- a/src/java.base/macosx/native/libnet/DefaultProxySelector.c
